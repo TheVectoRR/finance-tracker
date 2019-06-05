@@ -3,12 +3,12 @@
     "totalAmount": 1000000,
     "fixedInterests": [
         {
-            "LengthInYears": 20,
-            "InterestRate": 2.33
+            "lengthInYears": 20,
+            "interestRate": 2.33
         },
         {
-            "LengthInYears": 10,
-            "InterestRate": 3.33
+            "lengthInYears": 10,
+            "interestRate": 3.33
         }
     ]
 }

@@ -1,3 +1,4 @@
+import { LinearMortgageService } from './linear-mortgage.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LinearMortgageComponent implements OnInit {
 
-  constructor() { }
+  public totalAmount: number;
+  public lengthInYears: number;
+
+  constructor(private linearMortgageService: LinearMortgageService) { }
 
   ngOnInit() {
+    this.linearMortgageService.getMortgageData().subscribe((mortgageData) => {
+      this.totalAmount = mortgageData.totalAmount;
+      this.lengthInYears = mortgageData.lengthInYears;
+    })
   }
 
 }
