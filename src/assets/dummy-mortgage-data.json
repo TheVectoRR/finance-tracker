@@ -1,0 +1,14 @@
+{
+    "lengthInYears": 30,
+    "totalAmount": 1000000,
+    "fixedInterests": [
+        {
+            "LengthInYears": 20,
+            "InterestRate": 2.33
+        },
+        {
+            "LengthInYears": 10,
+            "InterestRate": 3.33
+        }
+    ]
+}
