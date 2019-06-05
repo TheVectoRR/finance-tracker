@@ -1,3 +1,4 @@
+import { LinearMortgageModule } from './linear-mortgage/linear-mortgage.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -10,7 +11,9 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+
+    LinearMortgageModule
   ],
   providers: [],
   bootstrap: [AppComponent]
