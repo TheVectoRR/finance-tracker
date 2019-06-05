@@ -8,9 +8,6 @@ import { LinearMortgageComponent } from './linear-mortgage.component';
   ],
   imports: [
     CommonModule
-  ],
-  exports: [
-    LinearMortgageComponent
   ]
 })
 export class LinearMortgageModule { }
