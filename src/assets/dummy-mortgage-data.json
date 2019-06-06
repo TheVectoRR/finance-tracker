@@ -1,6 +1,7 @@
 {
-    "lengthInYears": 30,
     "totalAmount": 1000000,
+    "lengthInYears": 30,
+    "startingDate": "01-05-2019",
     "fixedInterests": [
         {
             "lengthInYears": 20,

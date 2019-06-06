@@ -1,5 +1,9 @@
 import { MortgageService } from './mortgage.service';
 import { Component, OnInit } from '@angular/core';
+import * as moment from 'moment';
+import { Observable, of } from 'rxjs';
+
+const MONTHS_IN_YEAR = 12;
 
 @Component({
   selector: 'cash-mortgage',
@@ -9,14 +13,16 @@ import { Component, OnInit } from '@angular/core';
 export class MortgageComponent implements OnInit {
 
   public totalAmount: number;
-  public lengthInYears: number;
+  public lengthInMonths: number;
+  public startingDate: string;
 
   constructor(private mortgageService: MortgageService) { }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.mortgageService.getMortgageData().subscribe((mortgageData) => {
       this.totalAmount = mortgageData.totalAmount;
-      this.lengthInYears = mortgageData.lengthInYears;
+      this.lengthInMonths = mortgageData.lengthInYears * MONTHS_IN_YEAR;
+      this.startingDate = mortgageData.startingDate.format('MM-YYYY');
     });
   }
 
