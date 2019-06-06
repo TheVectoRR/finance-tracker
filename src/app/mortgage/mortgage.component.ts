@@ -1,7 +1,5 @@
 import { MortgageService } from './mortgage.service';
 import { Component, OnInit } from '@angular/core';
-import * as moment from 'moment';
-import { Observable, of } from 'rxjs';
 
 const MONTHS_IN_YEAR = 12;
 
