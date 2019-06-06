@@ -19,7 +19,7 @@ export class MortgageService {
             totalAmount: data.totalAmount,
             lengthInYears: data.lengthInYears,
             startingDate: moment(data.startingDate, 'DD-MM-YYYY'),
-            FixedInterests: []
+            fixedInterests: data.fixedInterests
           }))
         );
     }

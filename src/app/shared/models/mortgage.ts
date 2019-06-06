@@ -5,7 +5,7 @@ export interface Mortgage {
     totalAmount: number;
     lengthInYears: number;
     startingDate: moment.Moment;
-    FixedInterests: FixedInterest[];
+    fixedInterests: FixedInterest[];
 }
 
 export interface FixedInterest {

@@ -1,0 +1,7 @@
+{{ redemptionAmountPerMonth }}
+
+<ul>
+  <li *ngFor = "let rent of fixedInterests$ | async">
+    {{ rent.interestRate }}
+  </li>
+</ul>
