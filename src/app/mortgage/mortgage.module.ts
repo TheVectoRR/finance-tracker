@@ -1,19 +1,19 @@
-import { LinearMortgageService } from './linear-mortgage.service';
+import { MortgageService } from './mortgage.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { LinearMortgageComponent } from './linear-mortgage.component';
+import { MortgageComponent } from './mortgage.component';
 
 @NgModule({
   declarations: [
-    LinearMortgageComponent
+    MortgageComponent
   ],
   imports: [
     CommonModule,
     HttpClientModule
   ],
   providers: [
-    LinearMortgageService
+    MortgageService
   ]
 })
-export class LinearMortgageModule { }
+export class MortgageModule { }

@@ -1,4 +1,4 @@
-import { LinearMortgageRoutes } from './linear-mortgage/linear-mortgage.routes';
+import { MortgageRoutes } from './mortgage/mortgage.routes';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -8,10 +8,10 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'linear-mortgage',
+        redirectTo: 'mortgage',
         pathMatch: 'full'
       },
-      ...LinearMortgageRoutes
+      ...MortgageRoutes
     ]
   }
 ];

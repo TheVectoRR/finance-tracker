@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class LinearMortgageService {
+export class MortgageService {
 
     constructor(private http: HttpClient) { }
 
