@@ -1,7 +1,7 @@
 import { MortgageService } from './mortgage.service';
 import { Component, OnInit } from '@angular/core';
-import { Mortgage } from '../shared/models/mortgage';
 import { Observable } from 'rxjs';
+import { MonthlyPayment } from '../shared/models/mortgage-payment-month.model';
 
 @Component({
   selector: 'cash-mortgage',
@@ -10,12 +10,12 @@ import { Observable } from 'rxjs';
 })
 export class MortgageComponent implements OnInit {
 
-  public mortgageData$: Observable<Mortgage>;
+  public mortgageMonthlyPredictions$: Observable<MonthlyPayment[]>;
 
   constructor(private mortgageService: MortgageService) { }
 
   public ngOnInit() {
-    this.mortgageData$ = this.mortgageService.getMortgageData();
+    this.mortgageMonthlyPredictions$ = this.mortgageService.getMonthlyPaymentsPredictions();
   }
 
 }
