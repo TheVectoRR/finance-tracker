@@ -17,7 +17,21 @@ export class LinearMortgageComponent implements OnInit, AfterViewInit {
 
   public mortgageChart: Chart;
 
+  private mortgageAmountsEachMonth: number[] = [];
+  private mortgageyears: string[] = [];
+
   constructor() { }
+
+  public ngOnInit() {
+    this.mortgageMonthlyPredictions$.subscribe(
+    (mortgageData) => {
+        mortgageData.forEach((month) => {
+          this.mortgageAmountsEachMonth.push(month.totalToPayThisMonth);
+          this.mortgageyears.push(month.monthTitle);
+        });
+     }
+    );
+  }
 
   public ngAfterViewInit(): void {
     this.context = (this.graphCanvas.nativeElement).getContext('2d');
@@ -25,10 +39,10 @@ export class LinearMortgageComponent implements OnInit, AfterViewInit {
     this.mortgageChart = new Chart(this.context, {
       type: 'line',
       data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], // your labels array
+        labels: this.mortgageyears, // your labels array
         datasets: [
           {
-            data: [12, 19, 3, 5, 2, 3], // your data array
+            data: this.mortgageAmountsEachMonth, // your data array
             borderColor: '#00AEFF',
             fill: false
           }
@@ -48,10 +62,6 @@ export class LinearMortgageComponent implements OnInit, AfterViewInit {
         }
       }
     });
-  }
-
-  public ngOnInit() {
-
   }
 
 }
