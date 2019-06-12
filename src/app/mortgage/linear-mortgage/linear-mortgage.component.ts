@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { Observable, } from 'rxjs';
 import { MonthlyPayment } from '../../shared/models/mortgage-payment-month.model';
 import { Chart } from 'chart.js';
@@ -8,7 +8,7 @@ import { Chart } from 'chart.js';
   templateUrl: './linear-mortgage.component.html',
   styleUrls: ['./linear-mortgage.component.scss']
 })
-export class LinearMortgageComponent implements OnInit, AfterViewInit {
+export class LinearMortgageComponent implements AfterViewInit {
 
   @Input() public mortgageMonthlyPredictions$: Observable<MonthlyPayment[]>;
 
@@ -23,19 +23,21 @@ export class LinearMortgageComponent implements OnInit, AfterViewInit {
 
   constructor() { }
 
-  public ngOnInit() {
+  public ngAfterViewInit(): void {
     this.mortgageMonthlyPredictions$.subscribe(
-    (mortgageData) => {
+      (mortgageData) => {
         mortgageData.forEach((month) => {
           this.mortgageRedemptionPaymentEachMonth.push(month.monthlyCapitalPayment);
           this.mortgageRentPaymentEachMonth.push(month.monthlyRentPayment);
           this.mortgageyears.push(month.monthTitle);
         });
-     }
+
+        this.loadChart();
+      }
     );
   }
 
-  public ngAfterViewInit(): void {
+  private loadChart(): void {
     this.context = (this.graphCanvas.nativeElement).getContext('2d');
 
     const data = {
