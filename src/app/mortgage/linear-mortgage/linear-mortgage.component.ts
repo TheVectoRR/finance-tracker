@@ -17,7 +17,8 @@ export class LinearMortgageComponent implements OnInit, AfterViewInit {
 
   public mortgageChart: Chart;
 
-  private mortgageAmountsEachMonth: number[] = [];
+  private mortgageRentPaymentEachMonth: number[] = [];
+  private mortgageRedemptionPaymentEachMonth: number[] = [];
   private mortgageyears: string[] = [];
 
   constructor() { }
@@ -26,7 +27,8 @@ export class LinearMortgageComponent implements OnInit, AfterViewInit {
     this.mortgageMonthlyPredictions$.subscribe(
     (mortgageData) => {
         mortgageData.forEach((month) => {
-          this.mortgageAmountsEachMonth.push(month.totalToPayThisMonth);
+          this.mortgageRedemptionPaymentEachMonth.push(month.monthlyCapitalPayment);
+          this.mortgageRentPaymentEachMonth.push(month.monthlyRentPayment);
           this.mortgageyears.push(month.monthTitle);
         });
      }
@@ -36,31 +38,50 @@ export class LinearMortgageComponent implements OnInit, AfterViewInit {
   public ngAfterViewInit(): void {
     this.context = (this.graphCanvas.nativeElement).getContext('2d');
 
+    const data = {
+      labels: this.mortgageyears, // your labels array
+      datasets: [{
+        label: 'total redemption payment per month',
+        backgroundColor: 'rgba(132,99,255,0.2)',
+        borderColor: 'rgba(132,99,255,1)',
+        borderWidth: 2,
+        hoverBackgroundColor: 'rgba(132,99,255,0.4)',
+        hoverBorderColor: 'rgba(132,99,255,1)',
+        data: this.mortgageRedemptionPaymentEachMonth, // your data array
+      }, {
+        label: 'total rent payment per month',
+        backgroundColor: 'rgba(255,99,132,0.2)',
+        borderColor: 'rgba(255,99,132,1)',
+        borderWidth: 2,
+        hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+        hoverBorderColor: 'rgba(255,99,132,1)',
+        data: this.mortgageRentPaymentEachMonth, // your data array
+      }]
+    };
+
+    const options = {
+      maintainAspectRatio: false,
+      responsive: true,
+      scales: {
+        yAxes: [{
+          stacked: true,
+          gridLines: {
+            display: true,
+            color: 'rgba(255,99,132,0.2)'
+          }
+        }],
+        xAxes: [{
+          gridLines: {
+            display: false
+          }
+        }]
+      }
+    };
+
     this.mortgageChart = new Chart(this.context, {
       type: 'line',
-      data: {
-        labels: this.mortgageyears, // your labels array
-        datasets: [
-          {
-            data: this.mortgageAmountsEachMonth, // your data array
-            borderColor: '#00AEFF',
-            fill: false
-          }
-        ]
-      },
-      options: {
-        legend: {
-          display: false
-        },
-        scales: {
-          xAxes: [{
-            display: true
-          }],
-          yAxes: [{
-            display: true
-          }],
-        }
-      }
+      data,
+      options
     });
   }
 
