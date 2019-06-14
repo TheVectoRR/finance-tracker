@@ -49,27 +49,30 @@ export class MortgageService {
       );
 
       return mortgageData$.pipe(
-        map((mortgageData) => {
+        map((mortgageData) => ( [mortgageData, mortgageData.totalCapitalToPay ] )),
+        map(([mortgageData, totalCapitalToPay]: [any, number]) => {
           const monthArray: MonthlyPayment[] = [];
+          let totalCapitalStillToPay = totalCapitalToPay;
 
           for (let monthCtr = 0; monthCtr < mortgageData.lengthInMonths; monthCtr++) {
             const currentMonth = mortgageData.startingDate.add(1, 'month').format('MM-YYYY');
 
             const interestRateForPeriod = this.getInterestRateForMonthNumber(monthCtr, mortgageData.fixedInterestRate);
-            const rentPayment = (interestRateForPeriod / 100 *
-              (mortgageData.totalCapitalToPay - mortgageData.redemptionAmountPerMonth * monthCtr)) / MONTHS_IN_YEAR;
+            const rentPayment = (interestRateForPeriod / 100 * totalCapitalStillToPay) / MONTHS_IN_YEAR;
 
             const extraRedemptionMonth = mortgageData.extraRedemption
               .find((extraRed) => (extraRed.dateOfRedemption.format('MM-YYYY') === currentMonth));
 
             const extraRedemption = extraRedemptionMonth ? extraRedemptionMonth.redemptionAmount : 0;
 
+            totalCapitalStillToPay = totalCapitalStillToPay - mortgageData.redemptionAmountPerMonth - extraRedemption;
+
             monthArray.push({
               monthTitle: currentMonth,
               monthlyCapitalPayment: mortgageData.redemptionAmountPerMonth,
               monthlyRentPayment: rentPayment,
               totalToPayThisMonth: mortgageData.redemptionAmountPerMonth + rentPayment,
-              totalCapitalStillToPay: mortgageData.totalCapitalToPay - mortgageData.redemptionAmountPerMonth * (monthCtr + 1),
+              totalCapitalStillToPay,
               extraRedemptionPaymentThisMonth: extraRedemption
             });
           }
