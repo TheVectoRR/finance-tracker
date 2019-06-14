@@ -38,7 +38,7 @@ export class MortgageService {
           totalCapitalToPay: mortgageData.totalAmount,
           lengthInMonths: mortgageData.lengthInYears * MONTHS_IN_YEAR,
           startingDate: mortgageData.startingDate,
-          fixedInterestRate: mortgageData.fixedInterests[0].interestRate,
+          fixedInterestRate: mortgageData.fixedInterests,
           redemptionAmountPerMonth: mortgageData.totalAmount / (mortgageData.lengthInYears * MONTHS_IN_YEAR),
         }))
       );
@@ -48,7 +48,8 @@ export class MortgageService {
           const monthArray: MonthlyPayment[] = [];
 
           for (let monthCtr = 0; monthCtr < mortgageData.lengthInMonths; monthCtr++) {
-            const rentPayment = (mortgageData.fixedInterestRate / 100 *
+            const interestRateForPeriod = this.getInterestRateForMonthNumber(monthCtr, mortgageData.fixedInterestRate);
+            const rentPayment = (interestRateForPeriod / 100 *
               (mortgageData.totalCapitalToPay - mortgageData.redemptionAmountPerMonth * monthCtr)) / MONTHS_IN_YEAR;
 
             monthArray.push({
@@ -64,6 +65,11 @@ export class MortgageService {
           return monthArray;
         })
       );
+    }
+
+    private getInterestRateForMonthNumber(monthNumber: number, interestRateArray: FixedInterest[]): number {
+      return interestRateArray
+        .reduce((period1, period2) => monthNumber <= period1.lengthInYears * MONTHS_IN_YEAR ? period1 : period2).interestRate;
     }
 }
 
