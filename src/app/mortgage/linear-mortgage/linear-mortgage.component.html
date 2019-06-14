@@ -5,10 +5,10 @@
 <ul>
   <li *ngFor = "let payment of mortgageMonthlyPredictions$ | async">
     {{ payment.monthTitle }} |
-    redemption: {{ payment.monthlyRedemptionPayment }} |
-    rent: {{ payment.monthlyRentPayment }} |
-    total payment: {{ payment.totalToPayThisMonth }} |
-    still to pay: {{ payment.totalCapitalStillToPay }} |
-    extra redemption this month: {{ payment.extraRedemptionPaymentThisMonth }}
+    monthly payment: {{ payment.totalToPayThisMonth | currency:'EUR'}} |
+    redemption: {{ payment.monthlyRedemptionPayment | currency:'EUR'}} |
+    rent: {{ payment.monthlyRentPayment | currency:'EUR'}} |
+    still to pay: {{ payment.totalCapitalStillToPay | currency:'EUR' }} |
+    extra redemption: {{ payment.extraRedemptionPaymentThisMonth | currency:'EUR' }}
   </li>
 </ul>
