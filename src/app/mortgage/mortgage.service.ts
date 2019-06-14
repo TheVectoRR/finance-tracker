@@ -41,7 +41,7 @@ export class MortgageService {
         map((mortgageData) => {
           const monthArray: MonthlyPayment[] = [];
           let totalCapitalStillToPay = mortgageData.totalAmount;
-          const redemptionAmountPerMonth = mortgageData.totalAmount / (mortgageData.lengthInYears * MONTHS_IN_YEAR);
+          let redemptionAmountPerMonth = mortgageData.totalAmount / (mortgageData.lengthInYears * MONTHS_IN_YEAR);
 
           for (let monthCtr = 0; monthCtr < mortgageData.lengthInYears * MONTHS_IN_YEAR; monthCtr++) {
             const currentMonth = mortgageData.startingDate.add(1, 'month').format('MM-YYYY');
@@ -53,6 +53,10 @@ export class MortgageService {
               .find((extraRed) => (extraRed.dateOfRedemption.format('MM-YYYY') === currentMonth));
 
             const extraRedemption = extraRedemptionMonth ? extraRedemptionMonth.redemptionAmount : 0;
+
+            if ( this.isTimeToRecalculateMonthlyRedemption(monthCtr, mortgageData.fixedInterests) ) {
+              redemptionAmountPerMonth = totalCapitalStillToPay / (mortgageData.lengthInYears * MONTHS_IN_YEAR - monthCtr);
+            }
 
             totalCapitalStillToPay = totalCapitalStillToPay - redemptionAmountPerMonth - extraRedemption;
 
@@ -76,6 +80,10 @@ export class MortgageService {
         .reduce((period1, period2) => (monthNumber <= period1.lengthInYears * MONTHS_IN_YEAR) ? period1 : period2)
         .interestRate;
     }
+
+  private isTimeToRecalculateMonthlyRedemption(monthNumber: number, interestRateArray: FixedInterest[]): boolean {
+    return interestRateArray.some((period) => period.lengthInYears * MONTHS_IN_YEAR === monthNumber - 1);
+  }
 }
 
 interface MortgageResponse {
