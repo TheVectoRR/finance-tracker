@@ -1,13 +1,14 @@
-<!--<ul>-->
-<!--  <li *ngFor = "let payment of mortgageMonthlyPredictions$ | async">-->
-<!--    {{ payment.monthTitle }}-->
-<!--    redemption: {{ payment.monthlyCapitalPayment }}-->
-<!--    rent: {{ payment.monthlyRentPayment }}-->
-<!--    total payment: {{ payment.totalToPayThisMonth }}-->
-<!--    still to pay: {{ payment.totalCapitalStillToPay }}-->
-<!--  </li>-->
-<!--</ul>-->
-
 <div class="chart-container">
   <canvas #linearMortgageChart width="400" height="400"></canvas>
 </div>
+
+<ul>
+  <li *ngFor = "let payment of mortgageMonthlyPredictions$ | async">
+    {{ payment.monthTitle }}
+    redemption: {{ payment.monthlyCapitalPayment }}
+    rent: {{ payment.monthlyRentPayment }}
+    total payment: {{ payment.totalToPayThisMonth }}
+    still to pay: {{ payment.totalCapitalStillToPay }}
+    extra redemption this month: {{ payment.extraRedemptionPaymentThisMonth }}
+  </li>
+</ul>

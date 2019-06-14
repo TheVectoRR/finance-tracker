@@ -10,6 +10,12 @@
         {
             "lengthInYears": 10,
             "interestRate": 3.33
-        }
+        },
+    ],
+    "extraRedemptions": [
+      {
+        "dateOfRedemption": "03-09-2019",
+        "redemptionAmount": 10000
+      }
     ]
 }
