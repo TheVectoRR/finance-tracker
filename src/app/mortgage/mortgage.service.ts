@@ -69,7 +69,7 @@ export class MortgageService {
 
             monthArray.push({
               monthTitle: currentMonth,
-              monthlyCapitalPayment: mortgageData.redemptionAmountPerMonth,
+              monthlyRedemptionPayment: mortgageData.redemptionAmountPerMonth,
               monthlyRentPayment: rentPayment,
               totalToPayThisMonth: mortgageData.redemptionAmountPerMonth + rentPayment,
               totalCapitalStillToPay,

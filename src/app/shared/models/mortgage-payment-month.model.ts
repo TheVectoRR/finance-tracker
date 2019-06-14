@@ -1,6 +1,6 @@
 export interface MonthlyPayment {
   monthTitle: string;
-  monthlyCapitalPayment: number;
+  monthlyRedemptionPayment: number;
   monthlyRentPayment: number;
   totalToPayThisMonth: number;
   totalCapitalStillToPay: number;

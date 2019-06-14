@@ -27,7 +27,7 @@ export class LinearMortgageComponent implements AfterViewInit {
     this.mortgageMonthlyPredictions$.subscribe(
       (mortgageData) => {
         mortgageData.forEach((month) => {
-          this.mortgageRedemptionPaymentEachMonth.push(month.monthlyCapitalPayment);
+          this.mortgageRedemptionPaymentEachMonth.push(month.monthlyRedemptionPayment);
           this.mortgageRentPaymentEachMonth.push(month.monthlyRentPayment);
           this.mortgageyears.push(month.monthTitle);
         });
