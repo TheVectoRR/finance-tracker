@@ -12,14 +12,19 @@ export class LinearMortgageComponent implements AfterViewInit {
 
   @Input() public mortgageMonthlyPredictions$: Observable<MonthlyPayment[]>;
 
-  @ViewChild('linearMortgageChart', {static: false}) graphCanvas: ElementRef;
-  public context: CanvasRenderingContext2D;
+  @ViewChild('monthlyPaymentsChart', {static: false}) monthlyPaymentsChartCanvas: ElementRef;
+  public monthlyPaymentsChartContext: CanvasRenderingContext2D;
 
-  public mortgageChart: Chart;
+  @ViewChild('capitalBurnDownChart', {static: false}) capitalBurnDownChartCanvas: ElementRef;
+  public capitalBurnDownContext: CanvasRenderingContext2D;
+
+  public monthlyPaymentsChart: Chart;
+  public capitalBurnDownChart: Chart;
 
   private mortgageRentPaymentEachMonth: number[] = [];
   private mortgageRedemptionPaymentEachMonth: number[] = [];
   private mortgageyears: string[] = [];
+  private capitalBurndown: number[] = [];
 
   constructor() { }
 
@@ -30,20 +35,22 @@ export class LinearMortgageComponent implements AfterViewInit {
           this.mortgageRedemptionPaymentEachMonth.push(month.monthlyRedemptionPayment);
           this.mortgageRentPaymentEachMonth.push(month.monthlyRentPayment);
           this.mortgageyears.push(month.monthTitle);
+          this.capitalBurndown.push(month.totalCapitalStillToPay);
         });
 
-        this.loadChart();
+        this.loadMonthlyPaymentsGraph();
+        this.loadTotalCapitalBurnDownGraph();
       }
     );
   }
 
-  private loadChart(): void {
-    this.context = (this.graphCanvas.nativeElement).getContext('2d');
+  private loadMonthlyPaymentsGraph(): void {
+    this.monthlyPaymentsChartContext = (this.monthlyPaymentsChartCanvas.nativeElement).getContext('2d');
 
     const data = {
       labels: this.mortgageyears, // your labels array
       datasets: [{
-        label: 'total redemption payment per month',
+        label: 'redemption payments',
         backgroundColor: 'rgba(132,99,255,0.2)',
         borderColor: 'rgba(132,99,255,1)',
         borderWidth: 2,
@@ -51,7 +58,7 @@ export class LinearMortgageComponent implements AfterViewInit {
         hoverBorderColor: 'rgba(132,99,255,1)',
         data: this.mortgageRedemptionPaymentEachMonth, // your data array
       }, {
-        label: 'total rent payment per month',
+        label: 'rent payments',
         backgroundColor: 'rgba(255,99,132,0.2)',
         borderColor: 'rgba(255,99,132,1)',
         borderWidth: 2,
@@ -80,11 +87,54 @@ export class LinearMortgageComponent implements AfterViewInit {
       }
     };
 
-    this.mortgageChart = new Chart(this.context, {
+    this.monthlyPaymentsChart = new Chart(this.monthlyPaymentsChartContext, {
       type: 'line',
       data,
       options
     });
+  }
+
+  private loadTotalCapitalBurnDownGraph(): void {
+    this.capitalBurnDownContext = (this.capitalBurnDownChartCanvas.nativeElement).getContext('2d');
+
+    const data = {
+      labels: this.mortgageyears, // your labels array
+      datasets: [{
+        label: 'capital burn down',
+        backgroundColor: 'rgba(132,99,255,0.2)',
+        borderColor: 'rgba(132,99,255,1)',
+        borderWidth: 2,
+        hoverBackgroundColor: 'rgba(132,99,255,0.4)',
+        hoverBorderColor: 'rgba(132,99,255,1)',
+        data: this.capitalBurndown, // your data array
+      }]
+    };
+
+    const options = {
+      maintainAspectRatio: false,
+      responsive: true,
+      scales: {
+        yAxes: [{
+          stacked: true,
+          gridLines: {
+            display: true,
+            color: 'rgba(255,99,132,0.2)'
+          }
+        }],
+        xAxes: [{
+          gridLines: {
+            display: false
+          }
+        }]
+      }
+    };
+
+    this.capitalBurnDownChart = new Chart(this.capitalBurnDownContext, {
+      type: 'line',
+      data,
+      options
+    });
+
   }
 
 }
