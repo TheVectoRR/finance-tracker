@@ -13,31 +13,26 @@ const MONTHS_IN_YEAR = 12;
 @Injectable()
 export class MortgageService {
 
-    private mortgageData: Observable<MortgageResponse>;
+    private mortgageData$: Observable<MortgageResponse>;
 
-    constructor(private http: HttpClient) { }
-
-    private getMortgageData(): Observable<MortgageResponse> {
-      if (!this.mortgageData) {
-        this.mortgageData = this.http.get(MORTGAGE_DATA_PATH).pipe(
-          map((data: MortgageResponse) => ({
-            totalAmount: data.totalAmount,
-            lengthInYears: data.lengthInYears,
-            startingDate: moment(data.startingDate, 'DD-MM-YYYY'),
-            fixedInterests: data.fixedInterests,
-            extraRedemptions: data.extraRedemptions.map((redemption) => ({
-              dateOfRedemption: moment(redemption.dateOfRedemption, 'DD-MM-YYYY'),
-              redemptionAmount: redemption.redemptionAmount
-            }))
+    constructor(private http: HttpClient) {
+      this.mortgageData$ = this.http.get(MORTGAGE_DATA_PATH).pipe(
+        map((data: MortgageResponse) => ({
+          totalAmount: data.totalAmount,
+          lengthInYears: data.lengthInYears,
+          startingDate: moment(data.startingDate, 'DD-MM-YYYY'),
+          fixedInterests: data.fixedInterests,
+          extraRedemptions: data.extraRedemptions.map((redemption) => ({
+            dateOfRedemption: moment(redemption.dateOfRedemption, 'DD-MM-YYYY'),
+            redemptionAmount: redemption.redemptionAmount
           }))
-        );
-      }
-      return this.mortgageData;
+        }))
+      );
     }
 
     public getMonthlyPaymentsPredictions(): Observable<MonthlyPayment[]> {
 
-      return this.getMortgageData().pipe(
+      return this.mortgageData$.pipe(
         map((mortgageData) => {
           const monthArray: MonthlyPayment[] = [];
           let totalCapitalStillToPay = mortgageData.totalAmount;
